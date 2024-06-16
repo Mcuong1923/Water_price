@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 12, 2024 at 12:43 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th6 16, 2024 lúc 03:50 PM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,35 +18,39 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `water_management`
+-- Cơ sở dữ liệu: `water_management`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `invoices`
+-- Cấu trúc bảng cho bảng `invoices`
 --
 
 CREATE TABLE `invoices` (
   `id` int(11) NOT NULL,
   `id_user` int(11) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
-  `status` enum('paid','unpaid') DEFAULT 'unpaid',
+  `status` enum('paid','unpaid','archived') DEFAULT 'unpaid',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `invoices`
+-- Đang đổ dữ liệu cho bảng `invoices`
 --
 
 INSERT INTO `invoices` (`id`, `id_user`, `total_amount`, `status`, `created_at`) VALUES
 (8, 2, 2500000.00, 'paid', '2024-06-11 22:35:48'),
-(9, 2, 2460000.00, 'paid', '2024-06-11 22:42:37');
+(12, 2, 440000.00, 'unpaid', '2024-06-14 16:46:32'),
+(16, 2, 0.00, 'unpaid', '2024-06-14 22:12:05'),
+(17, 2, 0.00, 'unpaid', '2024-06-14 22:12:06'),
+(23, 5, 220000.00, 'unpaid', '2024-06-15 19:37:46'),
+(24, 4, 4440000.00, 'unpaid', '2024-06-15 19:38:52');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `settings`
+-- Cấu trúc bảng cho bảng `settings`
 --
 
 CREATE TABLE `settings` (
@@ -56,7 +60,7 @@ CREATE TABLE `settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `settings`
+-- Đang đổ dữ liệu cho bảng `settings`
 --
 
 INSERT INTO `settings` (`id`, `key_name`, `key_value`) VALUES
@@ -65,7 +69,7 @@ INSERT INTO `settings` (`id`, `key_name`, `key_value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Cấu trúc bảng cho bảng `users`
 --
 
 CREATE TABLE `users` (
@@ -78,17 +82,21 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Đang đổ dữ liệu cho bảng `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `address`, `role`) VALUES
 (2, 'Bui Vuong Truong', 'buitruong132100@gmail.com', '$2y$10$xB6oHWoVzEtcI2skMDl0RuYXwgarPHMG/Qr7vkqxEQm96QghzQsa6', 'HẢI PHÒNG', 'user'),
-(3, 'Admin', 'admin@gmail.com', '$2y$10$obp1XVms/yZeqVWf4Bm0ae5X/ghJA279SE/h3feIOaqQOIB/XRmwC', 'Hải Phòng', 'admin');
+(3, 'Admin', 'admin@gmail.com', '$2y$10$obp1XVms/yZeqVWf4Bm0ae5X/ghJA279SE/h3feIOaqQOIB/XRmwC', 'Hải Phòng', 'admin'),
+(4, 'test1', 'test01@gmail.com', '', 'ha noi', 'user'),
+(5, 'Mạnh Cường Nguyễn', '21011583@st.phenikaa-uni.edu.vn', '$2y$10$PsNWeRC2RF4wwuZLZ133ZuOkgk/ayiLUeJzU1uLR1.HR9rtBmWwL2', 'ha noi', 'user'),
+(6, 'dung', 'd@gmail.com', '$2y$10$rbsvhh5PRtsWZ3mQgFkGO.PWnh4DSzZoYE/e9tybZFipdMAX4/6uG', 'ha noi', 'user'),
+(7, 'cuong', 'nvancuong792@gmail.com', '$2y$10$C7tchBWNZzqHz1weOLaqkOFFnsSbQyNw9rt2ahrBVKjyJydJpyFd2', 'ha noi', 'user');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `water`
+-- Cấu trúc bảng cho bảng `water`
 --
 
 CREATE TABLE `water` (
@@ -99,77 +107,94 @@ CREATE TABLE `water` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Indexes for dumped tables
+-- Đang đổ dữ liệu cho bảng `water`
+--
+
+INSERT INTO `water` (`id`, `number_water`, `date`, `id_user`) VALUES
+(16, 11111, '2024-06-22', 4),
+(20, 111, '2024-06-13', 5),
+(21, 11, '2024-06-16', 5),
+(23, 11, '2024-06-22', 4),
+(24, 2222, '2024-06-14', 5),
+(26, 12, '2024-06-14', 7),
+(27, 3, '2024-06-17', 7),
+(28, 22, '2024-06-14', 6),
+(29, 1, '2024-06-26', 6),
+(30, 11, '2024-06-26', 7),
+(31, 2, '2024-06-16', 7);
+
+--
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `invoices`
+-- Chỉ mục cho bảng `invoices`
 --
 ALTER TABLE `invoices`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_user` (`id_user`);
 
 --
--- Indexes for table `settings`
+-- Chỉ mục cho bảng `settings`
 --
 ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `key_name` (`key_name`);
 
 --
--- Indexes for table `users`
+-- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `water`
+-- Chỉ mục cho bảng `water`
 --
 ALTER TABLE `water`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_user` (`id_user`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `invoices`
+-- AUTO_INCREMENT cho bảng `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `settings`
+-- AUTO_INCREMENT cho bảng `settings`
 --
 ALTER TABLE `settings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `water`
+-- AUTO_INCREMENT cho bảng `water`
 --
 ALTER TABLE `water`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- Constraints for dumped tables
+-- Các ràng buộc cho các bảng đã đổ
 --
 
 --
--- Constraints for table `invoices`
+-- Các ràng buộc cho bảng `invoices`
 --
 ALTER TABLE `invoices`
   ADD CONSTRAINT `invoices_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `water`
+-- Các ràng buộc cho bảng `water`
 --
 ALTER TABLE `water`
   ADD CONSTRAINT `water_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
@@ -178,6 +203,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-
