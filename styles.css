@@ -10,7 +10,7 @@ body {
 
 /* Bố cục container trung tâm */
 .container {
-    max-width: 900px; /* Tăng kích thước để phù hợp với nội dung rộng hơn */
+    max-width: 1000px; /* Tăng kích thước để phù hợp với nội dung rộng hơn */
     margin: 50px auto;
     padding: 30px; /* Thêm padding để có khoảng cách tốt hơn */
     background-color: #fff;
@@ -22,11 +22,11 @@ body {
 h2 {
     text-align: center;
     color: #333;
-    font-size: 26px; /* Tăng kích thước font */
-    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+    font-size: 28px; /* Tăng kích thước font */
+    margin-bottom: 25px; /* Khoảng cách dưới tiêu đề */
     font-weight: bold;
     text-transform: uppercase; /* Chuyển đổi thành chữ in hoa */
-    letter-spacing: 1.5px; /* Thêm khoảng cách giữa các chữ cái */
+    letter-spacing: 2px; /* Thêm khoảng cách giữa các chữ cái */
 }
 
 /* Form điều khiển */
@@ -100,27 +100,23 @@ input[type="submit"]:hover, button:hover {
 .delete-button:hover {
     background-color: #c9302c; /* Màu đỏ đậm hơn khi hover */
 }
-/* nút chi tiết */
+
+/* Nút chi tiết */
 .detail-button {
-    background-color: #5bc0de !important; /* Màu xanh dương nhạt */
-    color: white !important;
-    padding: 10px 20px !important;
-    border-radius: 4px !important;
-    border: none !important;
-    cursor: pointer !important;
-    text-decoration: none !important;
-    display: inline-block !important;
+    background-color: #5bc0de; /* Màu xanh dương nhạt */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
 }
-
-.detail-button:hover {
-    background-color: #31b0d5 !important;
-}
-
 
 .detail-button:hover {
     background-color: #31b0d5; /* Màu khi hover */
 }
-
 
 /* Định dạng cho đoạn văn */
 p {
@@ -179,6 +175,36 @@ tr:hover {
     background-color: #f1f1f1; /* Thêm hiệu ứng hover cho hàng */
 }
 
+/* Phân trang theo chiều ngang */
+.pagination {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    overflow-x: auto; /* Cho phép cuộn ngang nếu quá nhiều trang */
+    padding: 10px;
+}
+
+.pagination a {
+    color: #007bff;
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+    background-color: #f4f4f9;
+    border: 1px solid #ddd;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination a.active {
+    background-color: #0056b3;
+    color: #fff;
+}
+
 /* CSS cho phần chào mừng */
 .container p {
     font-size: 18px;
@@ -207,5 +233,9 @@ tr:hover {
 
     input[type="submit"], button {
         padding: 10px 15px; /* Giảm kích thước nút trên thiết bị nhỏ */
+    }
+    
+    .pagination a {
+        padding: 8px 10px; /* Giảm padding trên liên kết phân trang */
     }
 }
