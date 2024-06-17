@@ -25,7 +25,7 @@ $sql = "
 $result = $conn->query($sql);
 $users = $result->fetch_all(MYSQLI_ASSOC);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id']) && $_POST['user_id'] != "default") {
     $user_id = $_POST['user_id'];
     // Tính toán tổng số tiền
     foreach ($users as $user) {
@@ -76,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id'])) {
         <form method="post" action="calculate_water_bill.php">
             <label for="user_id">Chọn người dùng:</label>
             <select name="user_id" required>
+                <option value="default">-- Vui lòng chọn người dùng --</option>
                 <?php foreach ($users as $user) : ?>
                     <option value="<?php echo $user['id']; ?>">
                         <?php 
