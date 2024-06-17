@@ -2,26 +2,40 @@
 session_start();
 require 'config.php'; // Kết nối tới database
 
+$error = ''; // Khởi tạo biến lỗi trống
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     // Kiểm tra email và mật khẩu
     $sql = "SELECT * FROM users WHERE email = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['role'] = $user['role'];
-        $_SESSION['name'] = $user['name']; // Lưu tên người dùng vào session
-        header('Location: dashboard.php');
-        exit();
+        if ($user) {
+            // Kiểm tra mật khẩu
+            if (password_verify($password, $user['password'])) {
+                // Mật khẩu đúng, tạo session và chuyển hướng đến dashboard
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['role'] = $user['role'];
+                $_SESSION['name'] = $user['name']; // Lưu tên người dùng vào session
+                header('Location: dashboard.php');
+                exit();
+            } else {
+                // Mật khẩu không đúng
+                $error = "Mật khẩu không đúng. Vui lòng thử lại.";
+            }
+        } else {
+            // Email không tồn tại
+            $error = "Email không tồn tại trong hệ thống.";
+        }
     } else {
-        $error = "Invalid email or password";
+        // Xử lý lỗi khi chuẩn bị câu lệnh SQL
+        $error = "Lỗi khi chuẩn bị câu lệnh SQL: " . $conn->error;
     }
 }
 ?>
@@ -44,9 +58,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
             <input type="submit" value="Login">
         </form>
-        <?php if (isset($error)) echo "<p>$error</p>"; ?>
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        <?php if ($error): ?>
+            <p style='color: red;'><?php echo $error; ?></p>
+        <?php endif; ?>
         <p>Chưa có tài khoản? <a href="register.php">Đăng ký tại đây</a></p>
     </div>
 </body>
 </html>
-

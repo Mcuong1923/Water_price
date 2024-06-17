@@ -21,6 +21,7 @@ if (!isset($_SESSION['user_id'])) {
             <a href="manage_invoices.php">Quản lý hóa đơn</a><br>
             <a href="update_water_price.php">cập nhật tiền nước</a><br>
             <a href="calculate_water_bill.php">Tính toán hóa đơn</a><br>
+
         <?php elseif ($_SESSION['role'] == 'user') : ?>
         <a href="water_invoice.php">Hóa đơn</a><br>
         <?php endif ?>

@@ -33,18 +33,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id']) && $_POST['
             $number_water = $user['number_water'] ? $user['number_water'] : 0;
             $total_amount = $number_water * $water_price_per_unit;
 
-            // Thêm hóa đơn vào cơ sở dữ liệu
-            $insert_sql = "INSERT INTO invoices (id_user, total_amount, status, created_at) VALUES (?, ?, 'unpaid', NOW())";
-            $stmt = $conn->prepare($insert_sql);
-            $stmt->bind_param('id', $user_id, $total_amount);
-            if ($stmt->execute()) {
+            // Bắt đầu giao dịch
+            $conn->begin_transaction();
+
+            try {
+                // Thêm hóa đơn vào cơ sở dữ liệu
+                $insert_sql = "INSERT INTO invoices (id_user, total_amount, status, created_at) VALUES (?, ?, 'unpaid', NOW())";
+                $stmt = $conn->prepare($insert_sql);
+                $stmt->bind_param('id', $user_id, $total_amount);
+                if (!$stmt->execute()) {
+                    throw new Exception("Có lỗi xảy ra khi tạo hóa đơn!");
+                }
+
+                // Xóa thông tin số nước của người dùng sau khi tạo hóa đơn
+                if ($number_water > 0 && $user['date']) {
+                    $delete_sql = "DELETE FROM water WHERE id_user = ? AND date = ?";
+                    $stmt = $conn->prepare($delete_sql);
+                    $stmt->bind_param('is', $user_id, $user['date']);
+                    if (!$stmt->execute()) {
+                        throw new Exception("Có lỗi xảy ra khi xóa thông tin nước của người dùng!");
+                    }
+                }
+
+                // Commit giao dịch nếu mọi thứ thành công
+                $conn->commit();
                 // Lưu thông báo thành công và tổng số tiền vào session
                 $_SESSION['success'] = "Hóa đơn đã được tạo thành công!";
                 $_SESSION['total_amount'] = $total_amount;
                 header("Location: calculate_water_bill.php");
                 exit();
-            } else {
-                $error = "Có lỗi xảy ra khi tạo hóa đơn!";
+            } catch (Exception $e) {
+                // Rollback giao dịch nếu có lỗi
+                $conn->rollback();
+                $error = $e->getMessage();
             }
             break;
         }
