@@ -17,15 +17,19 @@ $water_price_per_unit = $setting ? (int)$setting['key_value'] : 10000; // Giá m
 // Nếu admin cập nhật giá tiền mỗi đơn vị
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_water_price_per_unit'])) {
     $new_price = $_POST['new_water_price_per_unit'];
-    // Cập nhật giá tiền mỗi đơn vị trong cơ sở dữ liệu
-    $update_sql = "UPDATE settings SET key_value = ? WHERE key_name = 'water_price_per_unit'";
-    $stmt = $conn->prepare($update_sql);
-    $stmt->bind_param('s', $new_price);
-    if ($stmt->execute()) {
-        $water_price_per_unit = $new_price;
-        $success = "Giá tiền mỗi đơn vị đã được cập nhật thành công!";
+    if ($new_price < 0) {
+        $error = "Giá tiền mỗi đơn vị không thể âm. Vui lòng nhập lại!";
     } else {
-        $error = "Có lỗi xảy ra khi cập nhật giá tiền mỗi đơn vị!";
+        // Cập nhật giá tiền mỗi đơn vị trong cơ sở dữ liệu
+        $update_sql = "UPDATE settings SET key_value = ? WHERE key_name = 'water_price_per_unit'";
+        $stmt = $conn->prepare($update_sql);
+        $stmt->bind_param('s', $new_price);
+        if ($stmt->execute()) {
+            $water_price_per_unit = $new_price;
+            $success = "Giá tiền mỗi đơn vị đã được cập nhật thành công!";
+        } else {
+            $error = "Có lỗi xảy ra khi cập nhật giá tiền mỗi đơn vị!";
+        }
     }
 }
 ?>
