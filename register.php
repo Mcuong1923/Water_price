@@ -1,5 +1,5 @@
 <?php
-require 'config.php'; // Kết nối tới database
+require_once 'config.php'; // Kết nối tới database
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];

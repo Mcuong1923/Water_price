@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'config.php'; // Kết nối tới database
+require_once 'config.php'; // Kết nối tới database
 
 $error = ''; // Khởi tạo biến lỗi trống
 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'config.php';
+require_once 'config.php';
 
 // Kiểm tra quyền truy cập của admin
 if ($_SESSION['role'] != 'admin') {
